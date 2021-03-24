@@ -24,11 +24,17 @@ public interface ArticleDao {
 
 	Article getForPrintArticle(@Param("id") int id);
 
-	List<Article> getForPrintArticles(@Param("boardId") int boardId,
+	List<Article> getForPrintArticles(@Param("directorId") int boardId,
 			@Param("searchKeywordType") String searchKeywordType, @Param("searchKeyword") String searchKeyword,
 			@Param("limitStart") int limitStart, @Param("limitTake") int limitTake);
 
+	List<Article> getForPrintCaleandars(@Param("directorId") int boardId,
+			@Param("searchKeywordType") String searchKeywordType, @Param("searchKeyword") String searchKeyword,
+			@Param("limitStart") int limitStart, @Param("limitTake") int limitTake);
+	
 	Board getBoard(@Param("id") int id);
 
 	void addReply(Map<String, Object> param);
+
+	int setStep2(@Param("id") Integer id);
 }

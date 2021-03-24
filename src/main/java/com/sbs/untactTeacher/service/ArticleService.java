@@ -74,30 +74,58 @@ public class ArticleService {
 		return getActorCanModifyRd(article, actor);
 	}
 
-	public Article getForPrintArticle(int id) {
-		System.out.println("2222222222222222");
+	public Article getForPrintArticle(int id) {		
 		return articleDao.getForPrintArticle(id);		
 	}
 
-	public List<Article> getForPrintArticles(int boardId, String searchKeywordType, String searchKeyword, int page,
+	public List<Article> getForPrintArticles(int directorId, String searchKeywordType, String searchKeyword, int page,
 			int itemsInAPage) {
 		
 		int limitStart = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
 		
-		List<Article> articles = articleDao.getForPrintArticles(boardId, searchKeywordType, searchKeyword, limitStart, limitTake);
-		List<Integer> articleIds = articles.stream().map(article -> article.getId()).collect(Collectors.toList());
-		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("article", articleIds, "common", "attachment");
+		List<Article> orders = articleDao.getForPrintArticles(directorId, searchKeywordType, searchKeyword, limitStart, limitTake);		
+		if(orders.isEmpty()) {			
+			return null;
+		}
+		List<Integer> orderIds = orders.stream().map(article -> article.getId()).collect(Collectors.toList());
 		
-		for (Article article : articles) {
-			Map<String, GenFile> mapByFileNo = filesMap.get(article.getId());
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("article", orderIds, "common", "attachment");
+		
+		for (Article order : orders) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(order.getId());
 
 			if (mapByFileNo != null) {
-				article.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+				order.getExtraNotNull().put("file__common__attachment", mapByFileNo);
 			}
 		}
 		
-		return articles;
+		return orders;
+	}
+	
+	public List<Article> getForPrintCaleandars(int directorId, String searchKeywordType, String searchKeyword, int page,
+			int itemsInAPage) {
+		
+		int limitStart = (page - 1) * itemsInAPage;
+		int limitTake = itemsInAPage;
+		
+		List<Article> orders = articleDao.getForPrintCaleandars(directorId, searchKeywordType, searchKeyword, limitStart, limitTake);		
+		if(orders.isEmpty()) {			
+			return null;
+		}
+		List<Integer> orderIds = orders.stream().map(article -> article.getId()).collect(Collectors.toList());
+		
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("article", orderIds, "common", "attachment");
+		
+		for (Article order : orders) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(order.getId());
+
+			if (mapByFileNo != null) {
+				order.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+			}
+		}
+		
+		return orders;
 	}
 
 	public Board getBoard(int id) {
@@ -110,5 +138,10 @@ public class ArticleService {
 		int id = Util.getAsInt(param.get("id"), 0);
 
 		return new ResultData("S-1", "성공하였습니다.", "id", id);
+	}
+
+	public int setStep2(Integer id) {
+		return articleDao.setStep2(id);
+		
 	}
 }

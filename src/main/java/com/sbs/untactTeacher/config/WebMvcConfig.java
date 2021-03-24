@@ -66,12 +66,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/usr/home/**").excludePathPatterns("/usr/member/authKey")
 				.excludePathPatterns("/usr/member/login").excludePathPatterns("/usr/member/doLogin")
 				.excludePathPatterns("/usr/member/join").excludePathPatterns("/usr/member/doExpertJoin")
-				.excludePathPatterns("/usr/article/list").excludePathPatterns("/usr/order/detail")
+				.excludePathPatterns("/usr/order/list").excludePathPatterns("/usr/order/detail")
 				.excludePathPatterns("/usr/reply/list").excludePathPatterns("/usr/member/findLoginId")
 				.excludePathPatterns("/usr/member/doFindLoginId").excludePathPatterns("/usr/member/findLoginPw")
 				.excludePathPatterns("/usr/member/doFindLoginPw").excludePathPatterns("/common/**")
 				.excludePathPatterns("/usr/file/test*").excludePathPatterns("/usr/file/doTest*")
-				.excludePathPatterns("/test/**").excludePathPatterns("/error");
+				.excludePathPatterns("/test/**").excludePathPatterns("/error")
+				.excludePathPatterns("/usr/article/accept").excludePathPatterns("/usr/caleandar/list"); 
 	
 		// 로그인 상태에서 접속할 수 없는 URI 전부 기술
 		registry.addInterceptor(needLogoutInterceptor).addPathPatterns("/adm/member/login")

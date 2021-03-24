@@ -17,8 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
 	@Bean
-	public Docket api() {
-		System.out.println("asdasdasdasdasdasd12313212131");
+	public Docket api() {		
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.sbs.untactTeacher.controller"))
 				.paths(PathSelectors.ant("/usr/**")).build().apiInfo(apiInfo());

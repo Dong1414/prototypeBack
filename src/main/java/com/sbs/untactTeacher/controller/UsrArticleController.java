@@ -13,17 +13,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.untactTeacher.dto.Article;
-import com.sbs.untactTeacher.dto.Board;
 import com.sbs.untactTeacher.dto.Member;
 import com.sbs.untactTeacher.dto.ResultData;
 import com.sbs.untactTeacher.service.ArticleService;
+import com.sbs.untactTeacher.service.MemberService;
 import com.sbs.untactTeacher.util.Util;
 
 @Controller
 public class UsrArticleController {
 	@Autowired
 	private ArticleService articleService;
+	@Autowired
+	private MemberService memberService;
+	
 
+	@GetMapping("/usr/order/accept")
+	@ResponseBody
+	public ResultData doAccept(Integer id) {
+		
+		if (id == null) {			
+			return new ResultData("F-1", "id를 입력해주세요.");			
+		}
+		
+		Article order = articleService.getForPrintArticle(id);
+		
+		if (order == null) {
+			return new ResultData("F-2", "존재하지 않는 게시물번호 입니다.");
+		}
+		
+		articleService.setStep2(id);
+
+		return new ResultData("S-1", "요청을 수락하였습니다.", "id", id);
+	}
+	
 	@GetMapping("/usr/order/detail")
 	@ResponseBody
 	public ResultData showDetail(Integer id) {
@@ -32,23 +54,23 @@ public class UsrArticleController {
 			return new ResultData("F-1", "id를 입력해주세요.");			
 		}
 		
-		Article article = articleService.getForPrintArticle(id);
+		Article order = articleService.getForPrintArticle(id);
 		System.out.println(id);
-		if (article == null) {
+		if (order == null) {
 			return new ResultData("F-2", "존재하지 않는 게시물번호 입니다.");
 		}
 
-		return new ResultData("S-1", "성공", "article", article);
+		return new ResultData("S-1", "성공", "order", order);
 	}
-
-	@GetMapping("/usr/article/list")
-	@ResponseBody
-	public ResultData showList(@RequestParam(defaultValue = "1") int boardId, String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {
-
-		Board board = articleService.getBoard(boardId);
 		
-		if ( board == null ) {
-			return new ResultData("F-1", "존재하지 않는 게시판 입니다.");
+	@GetMapping("/usr/caleandar/list")
+	@ResponseBody
+	public ResultData showCaleandarList(@RequestParam int directorId, String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {
+		
+		Member member = memberService.getMember(directorId);
+		
+		if ( member == null ) {
+			return new ResultData("F-1", "존재하지 않는 회원 입니다.");
 		}
 		
 		if (searchKeywordType != null) {
@@ -73,9 +95,50 @@ public class UsrArticleController {
 		
 		int itemsInAPage = 20;
 
-		List<Article> articles = articleService.getForPrintArticles(boardId, searchKeywordType, searchKeyword, page, itemsInAPage);
+		List<Article> orders = articleService.getForPrintCaleandars(directorId, searchKeywordType, searchKeyword, page, itemsInAPage);
+		if(orders == null) {			
+			return null;
+		}
+		return new ResultData("S-1", "성공", "orders", orders);
+	}
+	
+	@GetMapping("/usr/order/list")
+	@ResponseBody
+	public ResultData showList(@RequestParam int directorId, String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {
+		
+		Member member = memberService.getMember(directorId);
+		
+		if ( member == null ) {
+			return new ResultData("F-1", "존재하지 않는 회원 입니다.");
+		}
+		
+		if (searchKeywordType != null) {
+			searchKeywordType = searchKeywordType.trim();
+		}
 
-		return new ResultData("S-1", "성공", "articles", articles);
+		if (searchKeywordType == null || searchKeywordType.length() == 0) {
+			searchKeywordType = "titleAndBody";
+		}
+
+		if (searchKeyword != null && searchKeyword.length() == 0) {
+			searchKeyword = null;
+		}
+
+		if (searchKeyword != null) {
+			searchKeyword = searchKeyword.trim();
+		}
+
+		if (searchKeyword == null) {
+			searchKeywordType = null;
+		}
+		
+		int itemsInAPage = 20;
+
+		List<Article> orders = articleService.getForPrintArticles(directorId, searchKeywordType, searchKeyword, page, itemsInAPage);
+		if(orders == null) {			
+			return null;
+		}
+		return new ResultData("S-1", "성공", "orders", orders);
 	}
 	
 	@PostMapping("/usr/article/doAddReply")
