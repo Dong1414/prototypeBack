@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.sbs.untactTeacher.dto.Article;
 import com.sbs.untactTeacher.dto.Board;
+import com.sbs.untactTeacher.dto.HelperOrder;
 
 @Mapper
 public interface ArticleDao {
@@ -37,4 +38,8 @@ public interface ArticleDao {
 	void addReply(Map<String, Object> param);
 
 	int setStep2(@Param("id") Integer id);
+
+	List<HelperOrder> getForPrintHelperOrders(@Param("orderId") int boardId,
+			@Param("searchKeywordType") String searchKeywordType, @Param("searchKeyword") String searchKeyword,
+			@Param("limitStart") int limitStart, @Param("limitTake") int limitTake);
 }

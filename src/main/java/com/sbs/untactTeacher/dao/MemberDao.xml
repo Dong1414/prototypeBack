@@ -22,10 +22,32 @@
 		career = #{career},
 		relId = #{relId}			
 	</insert>
+	
+	<insert id="helperJoin" useGeneratedKeys="true" keyProperty="id">
+		INSERT
+		INTO `helper`
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		loginId = #{loginId},
+		loginPw = #{loginPw},
+		`name` = #{name},		
+		authKey = CONCAT("authKey1__", UUID(), "__", RAND()),		
+		cellphoneNo = #{cellphoneNo},		
+		email = #{email},
+		sido = #{sido},				
+		career = #{career}				
+	</insert>
 
 	<select id="getMember" resultType="Member">
 		SELECT *
 		FROM `expert`
+		WHERE id
+		= #{id}
+	</select>
+	
+	<select id="getHelper" resultType="Helper">
+		SELECT *
+		FROM `helper`
 		WHERE id
 		= #{id}
 	</select>
@@ -40,6 +62,12 @@
 	<select id="getMemberByLoginId" resultType="Member">
 		SELECT *
 		FROM `expert`
+		WHERE loginId = #{loginId}
+	</select>
+	
+	<select id="getHelperByLoginId" resultType="Helper">
+		SELECT *
+		FROM `helper`
 		WHERE loginId = #{loginId}
 	</select>
 

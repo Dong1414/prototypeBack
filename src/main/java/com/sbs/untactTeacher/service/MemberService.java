@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sbs.untactTeacher.dao.MemberDao;
 import com.sbs.untactTeacher.dto.GenFile;
+import com.sbs.untactTeacher.dto.Helper;
 import com.sbs.untactTeacher.dto.Member;
 import com.sbs.untactTeacher.dto.ResultData;
 import com.sbs.untactTeacher.util.Util;
@@ -62,7 +63,11 @@ public class MemberService {
 	public Member getMemberByLoginId(String loginId) {
 		return memberDao.getMemberByLoginId(loginId);
 	}
-
+	
+	public Helper getHelperByLoginId(String loginId) {
+		return memberDao.getHelperByLoginId(loginId);
+	}
+	
 	public ResultData modifyMember(Map<String, Object> param) {
 		memberDao.modifyMember(param);
 
@@ -116,6 +121,20 @@ public class MemberService {
 		updateForPrint(member);
 
 		return member;
+	}
+
+	public ResultData helperJoin(Map<String, Object> param) {		
+		memberDao.helperJoin(param);
+
+		int id = Util.getAsInt(param.get("id"), 0);
+
+		genFileService.changeInputFileRelIds(param, id);
+
+		return new ResultData("S-1", String.format("%s님 환영합니다.", param.get("name")), "id", id);
+	}
+
+	public Helper getHelper(int orderId) {
+		return memberDao.getHelper(orderId);
 	}
 
 }

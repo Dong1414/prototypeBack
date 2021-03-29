@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sbs.untactTeacher.dto.Helper;
 import com.sbs.untactTeacher.dto.Member;
 import com.sbs.untactTeacher.dto.ResultData;
 import com.sbs.untactTeacher.service.MemberService;
@@ -20,6 +21,19 @@ import com.sbs.untactTeacher.service.MemberService;
 public class UsrMemberController {
 	@Autowired
 	private MemberService memberService;
+	
+	@GetMapping("/usr/member/detail")
+	@ResponseBody
+	public ResultData showMemberDetail(int id) {
+		
+		Member member = memberService.getMember(id);
+		
+		if (member == null) {
+			return new ResultData("F-1", "아이디가 존재하지 않습니다.");
+		}	
+		System.out.println(member);
+		return new ResultData("S-1", "성공", "member", member);
+	}
 	
 	@PostMapping("/usr/member/doExpertJoin")
 	@ResponseBody
@@ -56,6 +70,39 @@ public class UsrMemberController {
 
 		return memberService.join(param);
 	}
+	
+	@PostMapping("/usr/member/doHelperJoin")
+	@ResponseBody
+	public ResultData doHelperJoin(@RequestParam Map<String, Object> param) {
+		if (param.get("loginId") == null) {
+			return new ResultData("F-1", "loginId를 입력해주세요.");
+		}
+
+		Helper existingMember = memberService.getHelperByLoginId((String) param.get("loginId"));
+
+		if (existingMember != null) {
+			return new ResultData("F-2", String.format("%s (은)는 이미 사용중인 로그인아이디 입니다.", param.get("loginId")));
+		}
+
+		if (param.get("loginPw") == null) {
+			return new ResultData("F-1", "loginPw를 입력해주세요.");
+		}
+
+		if (param.get("name") == null) {
+			return new ResultData("F-1", "name을 입력해주세요.");
+		}		
+
+		if (param.get("cellphoneNo") == null) {
+			return new ResultData("F-1", "cellphoneNo를 입력해주세요.");
+		}
+
+		if (param.get("email") == null) {
+			return new ResultData("F-1", "email을 입력해주세요.");
+		}
+
+		return memberService.helperJoin(param);
+	}
+
 	
 	@GetMapping("/usr/member/memberByAuthKey")
 	@ResponseBody

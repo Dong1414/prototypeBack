@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.untactTeacher.dto.Article;
+import com.sbs.untactTeacher.dto.Helper;
+import com.sbs.untactTeacher.dto.HelperOrder;
 import com.sbs.untactTeacher.dto.Member;
 import com.sbs.untactTeacher.dto.ResultData;
 import com.sbs.untactTeacher.service.ArticleService;
@@ -40,7 +42,9 @@ public class UsrArticleController {
 		if (order == null) {
 			return new ResultData("F-2", "존재하지 않는 게시물번호 입니다.");
 		}
-		
+		if (order.getStepLevel() > 1) {
+			return new ResultData("F-2", "이미 다른 지도사가 수락한 요청입니다.");
+		}
 		articleService.setStep2(id);
 
 		return new ResultData("S-1", "요청을 수락하였습니다.", "id", id);
@@ -62,7 +66,48 @@ public class UsrArticleController {
 
 		return new ResultData("S-1", "성공", "order", order);
 	}
+	
+	
+	@GetMapping("/usr/helperOrder/list")
+	@ResponseBody
+	public ResultData showHelperOrderList(@RequestParam int orderId, String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {
 		
+		Helper member = memberService.getHelper(orderId);
+		
+		if ( member == null ) {
+			return new ResultData("F-1", "존재하지 않는 회원 입니다.");
+		}
+		
+		if (searchKeywordType != null) {
+			searchKeywordType = searchKeywordType.trim();
+		}
+
+		if (searchKeywordType == null || searchKeywordType.length() == 0) {
+			searchKeywordType = "titleAndBody";
+		}
+
+		if (searchKeyword != null && searchKeyword.length() == 0) {
+			searchKeyword = null;
+		}
+
+		if (searchKeyword != null) {
+			searchKeyword = searchKeyword.trim();
+		}
+
+		if (searchKeyword == null) {
+			searchKeywordType = null;
+		}
+		
+		int itemsInAPage = 20;
+
+		List<HelperOrder> orders = articleService.getForPrintHelperOrders(orderId, searchKeywordType, searchKeyword, page, itemsInAPage);
+		if(orders == null) {			
+			return null;
+		}
+		return new ResultData("S-1", "성공", "orders", orders);
+	}
+
+	
 	@GetMapping("/usr/caleandar/list")
 	@ResponseBody
 	public ResultData showCaleandarList(@RequestParam int directorId, String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {

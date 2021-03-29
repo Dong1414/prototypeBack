@@ -10,17 +10,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Article {
+public class HelperOrder {
 	private int id;
 	private String regDate;
-	private String updateDate;
-	private String term;
+	private String updateDate;	
 	private String funeralHome;
 	private int directorId;
-	private int clientId;		
-	private String title;
-	private String body;
-	private int StepLevel;
+	private int orderId;		
+	private String title;	
+	private int stepLevel;
 	private String extra__writer;
 	private String extra__cellphoneNo;
 	private String extra__boardName;

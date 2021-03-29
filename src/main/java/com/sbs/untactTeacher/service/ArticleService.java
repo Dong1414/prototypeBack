@@ -11,6 +11,7 @@ import com.sbs.untactTeacher.dao.ArticleDao;
 import com.sbs.untactTeacher.dto.Article;
 import com.sbs.untactTeacher.dto.Board;
 import com.sbs.untactTeacher.dto.GenFile;
+import com.sbs.untactTeacher.dto.HelperOrder;
 import com.sbs.untactTeacher.dto.Member;
 import com.sbs.untactTeacher.dto.ResultData;
 import com.sbs.untactTeacher.util.Util;
@@ -143,5 +144,30 @@ public class ArticleService {
 	public int setStep2(Integer id) {
 		return articleDao.setStep2(id);
 		
+	}
+
+	public List<HelperOrder> getForPrintHelperOrders(int orderId, String searchKeywordType, String searchKeyword,
+		int page, int itemsInAPage) {
+		
+		int limitStart = (page - 1) * itemsInAPage;
+		int limitTake = itemsInAPage;
+		
+		List<HelperOrder> orders = articleDao.getForPrintHelperOrders(orderId, searchKeywordType, searchKeyword, limitStart, limitTake);		
+		if(orders.isEmpty()) {			
+			return null;
+		}
+		List<Integer> orderIds = orders.stream().map(article -> article.getId()).collect(Collectors.toList());
+		
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("article", orderIds, "common", "attachment");
+		
+		for (HelperOrder order : orders) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(order.getId());
+
+			if (mapByFileNo != null) {
+				order.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+			}
+		}
+		
+		return orders;
 	}
 }

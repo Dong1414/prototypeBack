@@ -117,6 +117,34 @@
 		</if>
 	</select>
 	
+	<select id="getForPrintHelperOrders" resultType="Helper">
+
+		SELECT A.*,
+		IFNULL(C.name, "탈퇴") AS extra__writer		
+		FROM `HelperOrder` AS A
+		LEFT JOIN `expert` AS M
+		ON A.directorId = M.id		
+		LEFT JOIN `order` AS C
+		ON A.orderId = C.id
+		WHERE 1
+		<if test="directorId != null">
+			AND A.directorId = #{directorId}
+		</if>
+		<if test="searchKeywordType == 'title'">
+			AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+		</if>		
+		<if test="searchKeywordType == 'titleAndBody'">
+			AND (A.title LIKE CONCAT('%', #{searchKeyword}, '%') OR
+			A.`body` LIKE CONCAT('%', #{searchKeyword}, '%'))
+		</if>
+			AND A.stepLevel = 1
+		ORDER BY A.id DESC
+		<if test="limitStart != null and limitTake != null">
+			LIMIT #{limitStart}, #{limitTake}
+		</if>
+	</select>
+	
+	
 	<insert id="addArticle" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO article
 		SET regDate = NOW(),

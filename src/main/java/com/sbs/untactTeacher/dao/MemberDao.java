@@ -6,15 +6,20 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.sbs.untactTeacher.dto.Helper;
 import com.sbs.untactTeacher.dto.Member;
 
 @Mapper
 public interface MemberDao {
 	void join(Map<String, Object> param);
 
+	void helperJoin(Map<String, Object> param);
+	
 	Member getMember(@Param("id") int id);
 	
 	Member getMemberByLoginId(@Param("loginId") String loginId);
+	
+	Helper getHelperByLoginId(@Param("loginId") String loginId);
 
 	void modifyMember(Map<String, Object> param);
 
@@ -23,4 +28,10 @@ public interface MemberDao {
 	List<Member> getForPrintMembers(Map<String, Object> param);
 
 	Member getForPrintMember(@Param("id") int id);
+	
+	Helper getHelper(@Param("id") int id);
+
+	
+
+	
 }
