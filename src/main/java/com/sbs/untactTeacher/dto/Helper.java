@@ -26,6 +26,5 @@ public class Helper {
 	private String sido;	
 	private String career;
 	private int relId;
-	private String extra__thumbImg;
-		
+	private String extra__thumbImg;		
 }

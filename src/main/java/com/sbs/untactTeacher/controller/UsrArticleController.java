@@ -50,6 +50,27 @@ public class UsrArticleController {
 		return new ResultData("S-1", "요청을 수락하였습니다.", "id", id);
 	}
 	
+	@GetMapping("/usr/helperOrder/accept")
+	@ResponseBody
+	public ResultData dohelperOrderAccept(Integer id) {
+		
+		if (id == null) {			
+			return new ResultData("F-1", "id를 입력해주세요.");			
+		}
+		
+		HelperOrder order = articleService.getHelperOrder(id);
+		
+		if (order == null) {
+			return new ResultData("F-2", "존재하지 않는 게시물번호 입니다.");
+		}
+		if (order.getStepLevel() > 1) {
+			return new ResultData("F-2", "이미 다른 지도사가 수락한 요청입니다.");
+		}
+		articleService.setHelperOrderStep2(id);
+
+		return new ResultData("S-1", "요청을 수락하였습니다.", "id", id);
+	}
+	
 	@GetMapping("/usr/order/detail")
 	@ResponseBody
 	public ResultData showDetail(Integer id) {
@@ -70,14 +91,8 @@ public class UsrArticleController {
 	
 	@GetMapping("/usr/helperOrder/list")
 	@ResponseBody
-	public ResultData showHelperOrderList(@RequestParam int orderId, String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {
-		
-		Helper member = memberService.getHelper(orderId);
-		
-		if ( member == null ) {
-			return new ResultData("F-1", "존재하지 않는 회원 입니다.");
-		}
-		
+	public ResultData showHelperOrderList(@RequestParam int id, String searchKeywordType, String searchKeyword, @RequestParam(defaultValue = "1") int page) {
+				
 		if (searchKeywordType != null) {
 			searchKeywordType = searchKeywordType.trim();
 		}
@@ -99,12 +114,12 @@ public class UsrArticleController {
 		}
 		
 		int itemsInAPage = 20;
-
-		List<HelperOrder> orders = articleService.getForPrintHelperOrders(orderId, searchKeywordType, searchKeyword, page, itemsInAPage);
+		
+		List<HelperOrder> orders = articleService.getForPrintHelperOrders(id, searchKeywordType, searchKeyword, page, itemsInAPage);
 		if(orders == null) {			
 			return null;
-		}
-		return new ResultData("S-1", "성공", "orders", orders);
+		}		
+		return new ResultData("S-1", "성공", "helperOrders", orders);
 	}
 
 	

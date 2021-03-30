@@ -42,4 +42,8 @@ public interface ArticleDao {
 	List<HelperOrder> getForPrintHelperOrders(@Param("orderId") int boardId,
 			@Param("searchKeywordType") String searchKeywordType, @Param("searchKeyword") String searchKeyword,
 			@Param("limitStart") int limitStart, @Param("limitTake") int limitTake);
+
+	HelperOrder getHelperOrder(@Param("id") Integer id);
+
+	int setHelperOrderStep2(@Param("id") Integer id);
 }

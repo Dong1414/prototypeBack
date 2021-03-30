@@ -13,16 +13,15 @@ import lombok.NoArgsConstructor;
 public class HelperOrder {
 	private int id;
 	private String regDate;
-	private String updateDate;	
-	private String funeralHome;
-	private int directorId;
-	private int orderId;		
-	private String title;	
+	private String updateDate;		
+	private int orderId;
+	private int helperid;	
+	private String name;
+	private String career;	
+	private String sido;	
 	private int stepLevel;
 	private String extra__writer;
-	private String extra__cellphoneNo;
-	private String extra__boardName;
-	private String extra__thumbImg;
+	private String extra__cellphoneNo;	
 	
 	private Map<String, Object> extra;
 

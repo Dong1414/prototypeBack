@@ -14,6 +14,15 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="setHelperOrderStep2">
+		UPDATE `helperOrder`
+		<set>			
+		updateDate = NOW(),
+		stepLevel = 2											
+		</set>
+		WHERE id = #{id}
+	</update>
+	
 	<select id="getBoard" resultType="Board">
 		SELECT *
 		FROM board
@@ -37,6 +46,14 @@
 		ON A.clientId = M.id
 		WHERE A.id = #{id}
 	</select>
+	
+	<select id="getHelperOrder" resultType="HelperOrder">
+		SELECT *
+		FROM helperOrder
+		WHERE id
+		= #{id}
+	</select>
+	
 
 	<select id="getArticles" resultType="Article">
 		SELECT *
@@ -117,19 +134,13 @@
 		</if>
 	</select>
 	
-	<select id="getForPrintHelperOrders" resultType="Helper">
-
+	<select id="getForPrintHelperOrders" resultType="HelperOrder">
 		SELECT A.*,
-		IFNULL(C.name, "탈퇴") AS extra__writer		
-		FROM `HelperOrder` AS A
-		LEFT JOIN `expert` AS M
-		ON A.directorId = M.id		
+		IFNULL(A.name, "탈퇴") AS extra__writer		
+		FROM `HelperOrder` AS A		
 		LEFT JOIN `order` AS C
 		ON A.orderId = C.id
-		WHERE 1
-		<if test="directorId != null">
-			AND A.directorId = #{directorId}
-		</if>
+		WHERE 1		
 		<if test="searchKeywordType == 'title'">
 			AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>		

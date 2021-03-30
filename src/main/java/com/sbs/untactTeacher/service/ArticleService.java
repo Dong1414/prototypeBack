@@ -142,8 +142,7 @@ public class ArticleService {
 	}
 
 	public int setStep2(Integer id) {
-		return articleDao.setStep2(id);
-		
+		return articleDao.setStep2(id);		
 	}
 
 	public List<HelperOrder> getForPrintHelperOrders(int orderId, String searchKeywordType, String searchKeyword,
@@ -156,8 +155,9 @@ public class ArticleService {
 		if(orders.isEmpty()) {			
 			return null;
 		}
-		List<Integer> orderIds = orders.stream().map(article -> article.getId()).collect(Collectors.toList());
-		
+		/*System.out.println("실행전");
+		List<Integer> orderIds = orders.stream().map(helperOrder -> helperOrder.getId()).collect(Collectors.toList());
+		System.out.println("실행후");
 		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("article", orderIds, "common", "attachment");
 		
 		for (HelperOrder order : orders) {
@@ -166,8 +166,16 @@ public class ArticleService {
 			if (mapByFileNo != null) {
 				order.getExtraNotNull().put("file__common__attachment", mapByFileNo);
 			}
-		}
+		}*/
 		
 		return orders;
+	}
+
+	public HelperOrder getHelperOrder(int id) {
+		return articleDao.getHelperOrder(id);
+	}
+
+	public int setHelperOrderStep2(Integer id) {
+		return articleDao.setHelperOrderStep2(id);
 	}
 }
