@@ -46,4 +46,6 @@ public interface ArticleDao {
 	HelperOrder getHelperOrder(@Param("id") Integer id);
 
 	int setHelperOrderStep2(@Param("id") Integer id);
+
+	void addOrderHelper(@Param("orderId") Integer orderId, @Param("name") String name); 
 }

@@ -56,9 +56,9 @@ public class UsrArticleController {
 		
 		if (id == null) {			
 			return new ResultData("F-1", "id를 입력해주세요.");			
-		}
+		}				
 		
-		HelperOrder order = articleService.getHelperOrder(id);
+		HelperOrder order = articleService.getHelperOrder(id);		
 		
 		if (order == null) {
 			return new ResultData("F-2", "존재하지 않는 게시물번호 입니다.");
@@ -66,8 +66,9 @@ public class UsrArticleController {
 		if (order.getStepLevel() > 1) {
 			return new ResultData("F-2", "이미 다른 지도사가 수락한 요청입니다.");
 		}
-		articleService.setHelperOrderStep2(id);
-
+		
+		articleService.setHelperOrderStep2(id);		
+		articleService.addOrderHelper(order.getOrderId() ,order.getName());
 		return new ResultData("S-1", "요청을 수락하였습니다.", "id", id);
 	}
 	
@@ -114,11 +115,12 @@ public class UsrArticleController {
 		}
 		
 		int itemsInAPage = 20;
-		
+		System.out.println(id);
 		List<HelperOrder> orders = articleService.getForPrintHelperOrders(id, searchKeywordType, searchKeyword, page, itemsInAPage);
 		if(orders == null) {			
 			return null;
 		}		
+		System.out.println(orders);
 		return new ResultData("S-1", "성공", "helperOrders", orders);
 	}
 

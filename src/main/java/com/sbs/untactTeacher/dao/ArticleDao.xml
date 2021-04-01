@@ -23,6 +23,14 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="addOrderHelper">
+		UPDATE `order`
+		<set>			
+		updateDate = NOW(),
+		helperName = CONCAT(helperName,#{name},',')											
+		</set>
+		WHERE id = #{orderId}
+	</update>
 	<select id="getBoard" resultType="Board">
 		SELECT *
 		FROM board
@@ -137,9 +145,7 @@
 	<select id="getForPrintHelperOrders" resultType="HelperOrder">
 		SELECT A.*,
 		IFNULL(A.name, "탈퇴") AS extra__writer		
-		FROM `HelperOrder` AS A		
-		LEFT JOIN `order` AS C
-		ON A.orderId = C.id
+		FROM `HelperOrder` AS A					
 		WHERE 1		
 		<if test="searchKeywordType == 'title'">
 			AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
@@ -149,6 +155,7 @@
 			A.`body` LIKE CONCAT('%', #{searchKeyword}, '%'))
 		</if>
 			AND A.stepLevel = 1
+			AND A.orderid = #{orderId}
 		ORDER BY A.id DESC
 		<if test="limitStart != null and limitTake != null">
 			LIMIT #{limitStart}, #{limitTake}

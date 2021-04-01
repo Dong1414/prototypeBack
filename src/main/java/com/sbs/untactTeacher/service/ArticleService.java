@@ -178,4 +178,9 @@ public class ArticleService {
 	public int setHelperOrderStep2(Integer id) {
 		return articleDao.setHelperOrderStep2(id);
 	}
+
+	public void addOrderHelper(Integer orderId, String name) {
+		articleDao.addOrderHelper(orderId, name);
+		
+	}
 }

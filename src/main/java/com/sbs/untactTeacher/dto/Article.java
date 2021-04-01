@@ -21,6 +21,7 @@ public class Article {
 	private String title;
 	private String body;
 	private int StepLevel;
+	private String helperName;
 	private String extra__writer;
 	private String extra__cellphoneNo;
 	private String extra__boardName;
