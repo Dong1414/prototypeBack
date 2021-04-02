@@ -15,7 +15,7 @@ public class HelperOrder {
 	private String regDate;
 	private String updateDate;		
 	private int orderId;
-	private int helperid;	
+	private int helperId;	
 	private String name;
 	private String career;	
 	private String sido;	

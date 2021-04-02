@@ -56,10 +56,13 @@
 	</select>
 	
 	<select id="getHelperOrder" resultType="HelperOrder">
-		SELECT *
-		FROM helperOrder
-		WHERE id
-		= #{id}
+		SELECT A.*,
+		M.cellphoneNo AS extra__cellphoneNo
+		FROM `helperOrder` AS A
+		LEFT JOIN
+		`helper` AS M
+		ON A.helperId = M.id
+		WHERE A.id = #{id}		
 	</select>
 	
 

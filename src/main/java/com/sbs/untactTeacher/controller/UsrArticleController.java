@@ -89,6 +89,22 @@ public class UsrArticleController {
 		return new ResultData("S-1", "성공", "order", order);
 	}
 	
+	@GetMapping("/usr/order/helperDetail")
+	@ResponseBody
+	public ResultData showHelperDetail(Integer id) {
+		
+		if (id == null) {			
+			return new ResultData("F-1", "id를 입력해주세요.");			
+		}
+		
+		HelperOrder helperOrder = articleService.getHelperOrder(id);
+		System.out.println(id);
+		if (helperOrder == null) {
+			return new ResultData("F-2", "존재하지 않는 게시물번호 입니다.");
+		}
+
+		return new ResultData("S-1", "성공", "helperOrder", helperOrder);
+	}
 	
 	@GetMapping("/usr/helperOrder/list")
 	@ResponseBody

@@ -54,11 +54,7 @@ public class UsrMemberController {
 
 		if (param.get("name") == null) {
 			return new ResultData("F-1", "name을 입력해주세요.");
-		}
-
-		if (param.get("nickname") == null) {
-			return new ResultData("F-1", "nickname을 입력해주세요.");
-		}
+		}	
 
 		if (param.get("cellphoneNo") == null) {
 			return new ResultData("F-1", "cellphoneNo를 입력해주세요.");
