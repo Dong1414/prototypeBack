@@ -69,7 +69,7 @@ public class UsrArticleController {
 		
 		articleService.setHelperOrderStep2(id);		
 		articleService.addOrderHelper(order.getOrderId() ,order.getName());
-		return new ResultData("S-1", "요청을 수락하였습니다.", "id", id);
+		return new ResultData("S-1", "요청을 수락하였습니다.", "id", order.getOrderId());
 	}
 	
 	@GetMapping("/usr/order/detail")
@@ -89,7 +89,7 @@ public class UsrArticleController {
 		return new ResultData("S-1", "성공", "order", order);
 	}
 	
-	@GetMapping("/usr/order/helperDetail")
+	@GetMapping("/usr/order/helperOrder")
 	@ResponseBody
 	public ResultData showHelperDetail(Integer id) {
 		
@@ -139,7 +139,8 @@ public class UsrArticleController {
 		System.out.println(orders);
 		return new ResultData("S-1", "성공", "helperOrders", orders);
 	}
-
+	
+	
 	
 	@GetMapping("/usr/caleandar/list")
 	@ResponseBody

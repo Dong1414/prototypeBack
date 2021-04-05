@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.sbs.untactTeacher.dto.Helper;
+import com.sbs.untactTeacher.dto.HelperOrder;
 import com.sbs.untactTeacher.dto.Member;
 
 @Mapper
@@ -31,7 +32,7 @@ public interface MemberDao {
 	
 	Helper getHelper(@Param("id") int id);
 
-	
+	List<Helper> getForPrintHelperOrdeStep2(@Param("id") Integer id); 
 
 	
 }

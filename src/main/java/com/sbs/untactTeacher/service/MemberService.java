@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.sbs.untactTeacher.dao.MemberDao;
 import com.sbs.untactTeacher.dto.GenFile;
 import com.sbs.untactTeacher.dto.Helper;
+import com.sbs.untactTeacher.dto.HelperOrder;
 import com.sbs.untactTeacher.dto.Member;
 import com.sbs.untactTeacher.dto.ResultData;
 import com.sbs.untactTeacher.util.Util;
@@ -136,5 +137,7 @@ public class MemberService {
 	public Helper getHelper(int orderId) {
 		return memberDao.getHelper(orderId);
 	}
-
+	public List<Helper> getForPrintHelperOrdeStep2(int id) {
+		return memberDao.getForPrintHelperOrdeStep2(id);
+	}
 }

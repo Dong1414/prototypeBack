@@ -1,5 +1,6 @@
 package com.sbs.untactTeacher.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.untactTeacher.dto.Helper;
+import com.sbs.untactTeacher.dto.HelperOrder;
 import com.sbs.untactTeacher.dto.Member;
 import com.sbs.untactTeacher.dto.ResultData;
 import com.sbs.untactTeacher.service.MemberService;
@@ -21,6 +23,22 @@ import com.sbs.untactTeacher.service.MemberService;
 public class UsrMemberController {
 	@Autowired
 	private MemberService memberService;
+	
+	
+	@GetMapping("/usr/member/helperOrderStep2")
+	@ResponseBody
+	public ResultData showHelperOrderStap2(@RequestParam int id) {
+		System.out.println("131312");				
+		List<Helper> helpers = memberService.getForPrintHelperOrdeStep2(id);
+		System.out.println("131312");
+		if(helpers == null) {			
+			return null;
+		}		
+		System.out.println("131312");
+		System.out.println(helpers);
+		return new ResultData("S-1", "성공", "helpers", helpers);
+	}
+
 	
 	@GetMapping("/usr/member/detail")
 	@ResponseBody
@@ -63,7 +81,7 @@ public class UsrMemberController {
 		if (param.get("email") == null) {
 			return new ResultData("F-1", "email을 입력해주세요.");
 		}
-
+		System.out.println(param);
 		return memberService.join(param);
 	}
 	
@@ -132,7 +150,7 @@ public class UsrMemberController {
 			return new ResultData("F-3", "비밀번호가 일치하지 않습니다.");
 		}
 
-		return new ResultData("S-1", String.format("%s님 환영합니다.", existingMember.getNickname()), "authKey", existingMember.getAuthKey(), "member", existingMember);
+		return new ResultData("S-1", String.format("%s님 환영합니다.", existingMember.getName()), "authKey", existingMember.getAuthKey(), "member", existingMember);
 	}
 
 	@PostMapping("/usr/member/doLogin")

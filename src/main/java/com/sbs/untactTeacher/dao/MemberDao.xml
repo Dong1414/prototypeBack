@@ -4,7 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sbs.untactTeacher.dao.MemberDao">
-
+	
+	<select id="getForPrintHelperOrdeStep2" resultType="Helper">
+		SELECT M.*
+		FROM `helper` AS M
+		INNER JOIN `helperOrder` AS O
+		ON M.id = O.helperId
+		WHERE O.orderId = #{id} AND O.stepLevel = 2;
+	</select>
+	
 	<insert id="join" useGeneratedKeys="true" keyProperty="id">
 		INSERT
 		INTO `expert`
@@ -18,8 +26,7 @@
 		email = #{email},
 		sido = #{sido},		
 		license = #{license},
-		career = #{career},
-		relId = #{relId}			
+		career = #{career}				
 	</insert>
 	
 	<insert id="helperJoin" useGeneratedKeys="true" keyProperty="id">
@@ -80,7 +87,7 @@
 		UPDATE expert
 		<set>
 			<if
-				test="loginPw != null || name != null || nickname != null || cellphoneNo != null || email != null">
+				test="loginPw != null || name != null || cellphoneNo != null || email != null">
 				updateDate = NOW(),
 			</if>
 			<if test="loginPw != null">
@@ -89,9 +96,7 @@
 			<if test="name != null">
 				`name` = #{name},
 			</if>
-			<if test="nickname != null">
-				nickname = #{nickname},
-			</if>
+			
 			<if test="cellphoneNo != null">
 				cellphoneNo = #{cellphoneNo},
 			</if>
@@ -108,14 +113,8 @@
 		WHERE 1
 		<if test="searchKeywordType == 'name'">
 			AND M.name LIKE CONCAT('%', #{searchKeyword}, '%')
-		</if>
-		<if test="searchKeywordType == 'nickname'">
-			AND M.`nickname` LIKE CONCAT('%', #{searchKeyword}, '%')
-		</if>
-		<if test="searchKeywordType == 'nameAndNickname'">
-			AND (M.name LIKE CONCAT('%', #{searchKeyword}, '%') OR
-			M.nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
-		</if>
+		</if>		
+		
 		<if test="searchKeywordType == 'loginId'">
 			AND M.loginId LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>

@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sbs.untactTeacher.dao.ArticleDao">
-
+	
 	<update id="setStep2">
 		UPDATE `order`
 		<set>			
@@ -27,15 +27,20 @@
 		UPDATE `order`
 		<set>			
 		updateDate = NOW(),
-		helperName = CONCAT(helperName,#{name},',')											
+		helperName = CONCAT(helperName,#{name},' ')											
 		</set>
 		WHERE id = #{orderId}
 	</update>
+	
 	<select id="getBoard" resultType="Board">
 		SELECT *
 		FROM board
 		WHERE id = #{id}
 	</select>
+
+
+	
+
 
 	<select id="getArticle" resultType="Article">
 		SELECT *
@@ -57,7 +62,8 @@
 	
 	<select id="getHelperOrder" resultType="HelperOrder">
 		SELECT A.*,
-		M.cellphoneNo AS extra__cellphoneNo
+		M.cellphoneNo AS extra__cellphoneNo,
+		M.name AS extra__writer
 		FROM `helperOrder` AS A
 		LEFT JOIN
 		`helper` AS M
